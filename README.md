@@ -143,4 +143,4 @@ ScriptGuard follows these principles:
 
 📄 License
 
-MIT License — free to use, modify, and distribute.
+GPLv3 License — free to use, modify, and distribute.

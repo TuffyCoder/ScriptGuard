@@ -1,0 +1,41 @@
+/* HUMANS.TXT */
+/* humanstxt.org */
+
+/* TEAM */
+Developer: TuffyCoder
+Contact: https://github.com/TuffyCoder
+GitHub: https://github.com/TuffyCoder
+YouTube: https://www.youtube.com/@TuffyCoder
+Reddit: https://reddit.com/u/TuffyCoder
+TikTok: https://tiktok.com/@TuffyCoderdev
+
+/* SITE */
+Name: ScriptGuard – Open-Source Firefox Privacy Extension
+Description: A free, open-source Firefox privacy extension that deletes tracking and ad scripts before they execute, blocks WebRTC and Blob IP leaks, removes fingerprint requests, and strips tracking URLs — while keeping sites usable.
+Language: English
+License: GPLv3 (https://www.gnu.org/licenses/gpl-3.0)
+Standards: HTML5, CSS3, JavaScript (ES6+)
+Components: No frameworks, plain vanilla JS for maximum transparency and security
+Source: https://github.com/TuffyCoder/ScriptGuard
+
+/* INSTALLATION */
+Firefox Add-ons: https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/
+GitHub: https://github.com/TuffyCoder/ScriptGuard
+
+/* FEATURES */
+- Script deletion before execution
+- WebRTC kill-switch
+- Blob URL kill-switch
+- Canvas/WebGL/audio fingerprint protection
+- Network-layer ad & tracker firewall
+- Tracking-URL stripping (utm_*, fbclid, gclid)
+- Global Privacy Control (GPC) signal
+- Per-site and global whitelists
+- Import/export rules as JSON
+- Zero telemetry, zero background requests
+- Fully auditable GPLv3 code
+
+/* UPDATES */
+Last updated: 2026-09-05
+Version: 1.1.0
+Update frequency: Bi-weekly to monthly

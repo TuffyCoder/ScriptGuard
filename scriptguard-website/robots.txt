@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+
+Sitemap: https://tuffycoder.github.io/ScriptGuard/sitemap.xml
+
+# Delay for bots to not overload the static site
+Crawl-delay: 1
+
+# Block AI training bots (optional)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /

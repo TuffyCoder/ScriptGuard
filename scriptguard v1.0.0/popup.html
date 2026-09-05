@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ScriptGuard</title>
+  <style>
+    /*
+     * ScriptGuard popup styles.
+     * Terminal-like: dark theme, monospace data, ASCII-flavoured borders.
+     * Plain, readable CSS on purpose - no frameworks, no build step.
+     */
+
+    :root {
+      --bg: #0d0f12;
+      --panel: #16191f;
+      --panel-2: #1b1f26;
+      --border: #2c3038;
+      --text: #e8eaed;
+      --muted: #9aa0a8;
+      --accent: #34d399;
+      --accent-dark: #1f9d55;
+      --good: #22c55e;
+      --blue: #3b82f6;
+      --warn: #fbbf24;
+      --danger: #f87171;
+      --idle: #6b7280;
+      --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 348px;
+      max-height: 560px;
+      overflow-y: auto;
+      background: var(--bg);
+      color: var(--text);
+      font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    body::-webkit-scrollbar { width: 8px; }
+    body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0 9px,
+        rgba(52, 211, 153, 0.03) 9px 10px
+      );
+    }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .logo {
+      width: 24px; height: 24px;
+      border-radius: 5px;
+      background: linear-gradient(145deg, #1f9d55, #34d399);
+      display: inline-flex; align-items: center; justify-content: center;
+      font: 700 11px var(--mono); color: #06281a;
+      flex: none;
+    }
+    header h1 { font-size: 14px; font-weight: 700; letter-spacing: .3px; }
+    header .ver {
+      color: var(--muted); font: 10.5px var(--mono); margin-left: auto;
+      border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px;
+    }
+    header .tagline {
+      margin-top: 4px;
+      color: var(--muted); font: 10.5px var(--mono);
+      letter-spacing: .4px;
+    }
+    header .tagline::before { content: ">_ "; color: var(--accent); }
+
+    .site {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .site .domain { font: 600 12px var(--mono); word-break: break-all; }
+    .site .mode-chip {
+      margin-left: auto; flex: none;
+      font: 10px/1 var(--mono); font-weight: 700; letter-spacing: .8px;
+      padding: 4px 8px; border-radius: 999px;
+      background: var(--panel); border: 1px solid var(--border);
+    }
+    .mode-chip.m-OFF     { color: var(--idle); }
+    .mode-chip.m-BASIC   { color: var(--good); }
+    .mode-chip.m-PRO     { color: var(--warn); }
+    .mode-chip.m-MAXIMUM { color: var(--danger); }
+
+    /* ---- mode selector ---- */
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mode-btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 7px 0 6px;
+      font: 700 11px var(--mono); letter-spacing: .4px;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .mode-btn:hover { color: var(--text); }
+    .mode-btn.active.m-OFF     { color: var(--idle);   border-color: var(--idle); }
+    .mode-btn.active.m-BASIC   { color: var(--good);   border-color: var(--good); }
+    .mode-btn.active.m-PRO     { color: var(--warn);   border-color: var(--warn); }
+    .mode-btn.active.m-MAXIMUM { color: var(--danger); border-color: var(--danger); }
+    .mode-hint {
+      padding: 0 14px 10px;
+      color: var(--muted); font-size: 11.5px;
+      min-height: 16px;
+    }
+
+    /* ---- counters ---- */
+    .stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6px; padding: 0 14px 10px;
+    }
+    .stat {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 9px;
+    }
+    .stat b { font: 700 15px var(--mono); display: block; }
+    .stat span { color: var(--muted); font-size: 9.5px; text-transform: uppercase; letter-spacing: .5px; }
+    .stat.deleted b { color: var(--danger); }
+    .stat.fp b { color: var(--warn); }
+    .stat.net b { color: var(--accent); }
+
+    /* ---- ad & tracker firewall ---- */
+    .fw-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .fw-row .k { font: 10.5px var(--mono); color: var(--muted); }
+    .fw-row select {
+      background: var(--panel); border: 1px solid var(--border); color: var(--text);
+      font: 10.5px var(--mono); border-radius: 6px; padding: 4px 6px;
+    }
+    .fw-row select:focus { outline: none; border-color: var(--accent-dark); }
+    label.fw-check {
+      display: flex; align-items: center; gap: 8px;
+      font: 10.5px var(--mono); color: var(--text); cursor: pointer;
+    }
+    label.fw-check input { accent-color: var(--accent); }
+    .fw-net {
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .fw-net span {
+      font: 700 9.5px var(--mono); letter-spacing: .6px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 999px; border: 1px solid;
+    }
+    .fw-net span.on { color: var(--accent); border-color: rgba(52, 211, 153, .5); }
+    .fw-net span.off { color: var(--idle); border-color: var(--border); }
+
+    /* ---- script list ---- */
+    .section-title {
+      padding: 8px 14px 6px;
+      font: 700 10.5px var(--mono); letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .section-title::before { content: "// "; color: var(--accent); }
+    .scripts {
+      max-height: 200px; overflow-y: auto;
+      margin: 0 14px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--panel);
+    }
+    .scripts::-webkit-scrollbar { width: 8px; }
+    .scripts::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .script-item { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    .script-item:last-child { border-bottom: none; }
+    .row1 { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+    .dot.blocked { background: var(--danger); }
+    .dot.pending { background: var(--warn); }
+    .dot.executed { background: var(--idle); }
+    .dot.whitelisted { background: var(--accent); }
+    .s-name {
+      font: 11px var(--mono);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      direction: rtl; text-align: left; /* keep the tail (filename) visible */
+    }
+    .s-type {
+      flex: none; font: 700 9px var(--mono); letter-spacing: .5px;
+      color: var(--muted); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 4px;
+    }
+    .s-reason { color: var(--muted); font-size: 10.5px; margin: 3px 0 0 13px; }
+    .s-hint { color: var(--warn); font: 10px var(--mono); margin: 3px 0 0 13px; }
+    .s-actions { display: flex; gap: 6px; margin: 6px 0 0 13px; }
+
+    button.small {
+      border: 1px solid var(--border); background: transparent; color: var(--text);
+      font-size: 10.5px; padding: 3px 8px; border-radius: 5px; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    button.small:hover { background: #262a32; }
+    button.small.primary { color: #06281a; background: var(--accent); border-color: var(--accent); font-weight: 600; }
+    button.small.primary:hover { background: #2ecc8f; }
+    button.small.danger { color: var(--danger); border-color: #4a2a2a; }
+
+    .empty { padding: 16px 14px; color: var(--muted); text-align: center; font-size: 12px; }
+
+    /* ---- collapsible sections ---- */
+    details.sec { border-bottom: 1px solid var(--border); }
+    details.sec:last-of-type { border-bottom: none; }
+    details.sec > summary {
+      list-style: none;
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font: 700 10.5px var(--mono); letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+      user-select: none;
+    }
+    details.sec > summary::-webkit-details-marker { display: none; }
+    details.sec > summary::before { content: "["; color: var(--idle); }
+    details.sec > summary::after  { content: "]"; color: var(--idle); }
+    details.sec > summary .chev { margin-left: auto; color: var(--idle); font-size: 10px; }
+    details.sec[open] > summary { color: var(--text); }
+    details.sec[open] > summary .chev { transform: rotate(90deg); }
+    .sec-body { padding: 0 14px 12px; display: grid; gap: 8px; }
+
+    /* ---- chips (whitelist / regex entries) ---- */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--panel-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 3px 7px;
+      font: 10.5px var(--mono); color: var(--text);
+      max-width: 100%;
+    }
+    .chip .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+    .chip button {
+      border: none; background: transparent; color: var(--muted);
+      cursor: pointer; font: 700 11px var(--mono); padding: 0 1px;
+    }
+    .chip button:hover { color: var(--danger); }
+
+    .add-row { display: flex; gap: 6px; }
+    .add-row input {
+      flex: 1 1 auto; min-width: 0;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text);
+      font: 11px var(--mono); padding: 6px 8px;
+    }
+    .add-row input:focus { outline: none; border-color: var(--accent-dark); }
+    .add-row button {
+      flex: none;
+      border: 1px solid var(--accent-dark); background: transparent; color: var(--accent);
+      font: 600 10.5px var(--mono); padding: 5px 10px; border-radius: 6px; cursor: pointer;
+    }
+    .add-row button:hover { background: rgba(52, 211, 153, .12); }
+
+    .hint-line { color: var(--muted); font-size: 10.5px; }
+    .hint-line b { color: var(--text); font-weight: 600; }
+
+    /* ---- privacy shields ---- */
+    .shield-toggle {
+      width: 100%;
+      border: 1px solid var(--accent-dark);
+      background: rgba(52, 211, 153, .08);
+      color: var(--accent);
+      font: 700 11px var(--mono); letter-spacing: .5px;
+      padding: 8px 10px; border-radius: 7px; cursor: pointer;
+    }
+    .shield-toggle:hover { background: rgba(52, 211, 153, .16); }
+    .shield-toggle[disabled] { border-color: var(--border); color: var(--idle); background: transparent; cursor: not-allowed; }
+    .shield-toggle.off { border-color: #4a3a1a; color: var(--warn); background: rgba(251, 191, 36, .07); }
+    .shield-row { display: flex; justify-content: space-between; gap: 8px; font: 10.5px var(--mono); }
+    .shield-row .k { color: var(--muted); }
+    .shield-row .v.on { color: var(--accent); }
+    .shield-row .v.off { color: var(--idle); }
+
+    /* ---- public IP exposure ---- */
+    .ip-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-left: 3px solid var(--warn);
+      border-radius: 7px; padding: 8px 10px;
+      display: grid; gap: 5px;
+    }
+    .ip-card p { font-size: 11px; color: var(--text); }
+    .ip-card p.dim { color: var(--muted); font-size: 10.5px; }
+    .ip-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .ip-badge {
+      font: 700 9.5px var(--mono); letter-spacing: .6px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 999px; border: 1px solid;
+    }
+    .ip-badge.warn { color: var(--warn); border-color: rgba(251, 191, 36, .5); }
+    .ip-badge.rec { color: var(--accent); border-color: rgba(52, 211, 153, .5); }
+
+    /* ---- report ---- */
+    pre.report {
+      background: #0a0c0f; border: 1px solid var(--border);
+      border-radius: 7px; padding: 8px 10px;
+      font: 10px/1.5 var(--mono); color: var(--accent);
+      white-space: pre-wrap; word-break: break-word;
+      max-height: 180px; overflow-y: auto;
+      display: none;
+    }
+    pre.report.show { display: block; }
+    pre.report::-webkit-scrollbar { width: 8px; }
+    pre.report::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .report-actions { display: flex; gap: 6px; }
+    .report-actions button { flex: 1; padding: 6px 8px; text-align: center; }
+
+    /* ---- community ---- */
+    .comm { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .comm a {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 9px;
+      color: var(--text); text-decoration: none; font-size: 11px; font-weight: 600;
+      transition: border-color .15s;
+    }
+    .comm a:hover { border-color: var(--accent-dark); }
+    .comm a .ic { font: 700 10px var(--mono); color: var(--accent); flex: none; }
+    .comm a.wide { grid-column: 1 / -1; }
+    .src-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      border: 1px dashed var(--accent-dark); border-radius: 7px;
+      color: var(--accent); text-decoration: none;
+      font: 600 11px var(--mono); padding: 7px 9px;
+    }
+    .src-btn:hover { background: rgba(52, 211, 153, .1); }
+
+    /* ---- footer actions ---- */
+    .foot { padding: 10px 14px 12px; display: grid; gap: 8px; border-top: 1px solid var(--border); }
+    .foot-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .foot button.small { flex: 1 1 auto; padding: 6px 8px; text-align: center; }
+    label.trust {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 7px; padding: 8px 10px; cursor: pointer;
+      font-size: 12px;
+    }
+    label.trust input { accent-color: var(--accent); }
+    .toast {
+      position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+      background: #0b0d10; border: 1px solid var(--accent-dark); color: var(--text);
+      padding: 6px 12px; border-radius: 999px; font-size: 11.5px;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+      white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
+      z-index: 10;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="logo" aria-hidden="true">SG</span>
+      <h1>ScriptGuard</h1>
+      <span class="ver" id="ver">v&hellip;</span>
+    </div>
+    <p class="tagline">open-source privacy shield</p>
+  </header>
+
+  <div class="site">
+    <span class="domain" id="domain">&hellip;</span>
+    <span class="mode-chip" id="modeChip">BASIC</span>
+  </div>
+
+  <div class="modes" role="group" aria-label="Privacy mode">
+    <button class="mode-btn m-OFF"     data-mode="OFF">OFF</button>
+    <button class="mode-btn m-BASIC"   data-mode="BASIC">BASIC</button>
+    <button class="mode-btn m-PRO"     data-mode="PRO">PRO</button>
+    <button class="mode-btn m-MAXIMUM" data-mode="MAXIMUM">MAX</button>
+  </div>
+  <p class="mode-hint" id="modeHint"></p>
+
+  <div class="stats" aria-live="polite">
+    <div class="stat deleted"><b id="statDeleted">0</b><span>deleted here</span></div>
+    <div class="stat"><b id="statSite">0</b><span>all time, site</span></div>
+    <div class="stat fp"><b id="statFp">0</b><span>fp probes hit</span></div>
+    <div class="stat net"><b id="statNet">0</b><span>ad reqs blocked</span></div>
+  </div>
+
+  <p class="section-title">Scripts on this page</p>
+  <div class="scripts" id="scriptList" role="list" aria-label="Detected scripts"></div>
+  <p class="empty" id="emptyMsg" hidden></p>
+
+  <!-- ===== whitelists ===== -->
+  <details class="sec" id="secWhitelists">
+    <summary>Whitelists <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <p class="hint-line"><b>Global whitelist</b> - allowed on every site (BASIC + PRO only).</p>
+      <div class="chips" id="globalWhitelistChips"></div>
+      <div class="add-row">
+        <input type="text" id="globalAdd" placeholder="pattern, e.g. *cdn.example.net/*" aria-label="Add global whitelist pattern">
+        <button id="globalAddBtn">Add</button>
+      </div>
+      <p class="hint-line"><b>Site whitelist</b> - allowed on <span id="siteKeyLabel">this site</span> only.</p>
+      <div class="chips" id="siteWhitelistChips"></div>
+      <div class="add-row">
+        <input type="text" id="siteAdd" placeholder="pattern for this domain" aria-label="Add site whitelist pattern">
+        <button id="siteAddBtn">Add</button>
+      </div>
+    </div>
+  </details>
+
+  <!-- ===== regex rules ===== -->
+  <details class="sec" id="secRegex">
+    <summary>Regex rules <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <p class="hint-line">Scripts matching a regex are <b>deleted</b> in BASIC and PRO. MAXIMUM deletes everything anyway.</p>
+      <div class="chips" id="regexChips"></div>
+      <div class="add-row">
+        <input type="text" id="regexAdd" placeholder="/analytics|telemetry/  (RegExp source)" aria-label="Add regex rule" spellcheck="false">
+        <button id="regexAddBtn">Add</button>
+      </div>
+    </div>
+  </details>
+
+  <!-- ===== ad & tracker firewall ===== -->
+  <details class="sec" id="secFirewall">
+    <summary>Ad &amp; tracker firewall <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <div class="fw-row">
+        <span class="k">ad &amp; tracker requests</span>
+        <select id="adBlockMode" aria-label="Ad firewall mode">
+          <option value="armed">block in BASIC, PRO &amp; MAX</option>
+          <option value="off">do not block</option>
+        </select>
+      </div>
+      <label class="fw-check">
+        <input type="checkbox" id="stripTracking">
+        <span>Strip tracking URLs (utm_*, fbclid, gclid &hellip;)</span>
+      </label>
+      <label class="fw-check">
+        <input type="checkbox" id="gpcToggle">
+        <span>Send Global Privacy Control (GPC + DNT)</span>
+      </label>
+      <label class="fw-check">
+        <input type="checkbox" id="autoWipe">
+        <span>Auto-wipe site data when its tab closes</span>
+      </label>
+      <div class="fw-net">
+        <span class="off" id="fwState">FIREWALL IDLE</span>
+        <span class="off" id="fwTab">0 this tab</span>
+        <span class="off" id="fwSite">0 all time</span>
+      </div>
+      <p class="hint-line">Blocks ad iframes, banners, beacons and tracking domains at the network layer - before anything is downloaded.</p>
+    </div>
+  </details>
+
+  <!-- ===== privacy shields ===== -->
+  <details class="sec" id="secShields">
+    <summary>Privacy shields <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <button class="shield-toggle" id="shieldToggle">Disable WebRTC &amp; Blob</button>
+      <div class="shield-row"><span class="k">webrtc (RTCPeerConnection / STUN / ICE)</span><span class="v" id="shieldWebrtc">-</span></div>
+      <div class="shield-row"><span class="k">blob (createObjectURL / blob: workers)</span><span class="v" id="shieldBlob">-</span></div>
+      <div class="shield-row"><span class="k">fingerprint requests</span><span class="v" id="fpLevel">-</span></div>
+      <div class="shield-row"><span class="k">canvas/webgl/audio probes hit</span><span class="v" id="fpCount">0</span></div>
+      <div class="shield-row"><span class="k">cross-site WebSocket/beacon channels</span><span class="v" id="channelLevel">-</span></div>
+      <div class="shield-row"><span class="k">privacy API hardening hits</span><span class="v" id="privacyCount">0</span></div>
+      <div class="shield-row"><span class="k">ad iframes/images removed here</span><span class="v" id="adCount">0</span></div>
+      <p class="hint-line" id="shieldHint">Shields arm automatically in PRO and MAXIMUM modes.</p>
+    </div>
+  </details>
+
+  <!-- ===== public IP exposure ===== -->
+  <details class="sec" id="secIp">
+    <summary>Public IP exposure <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <div class="ip-card">
+        <p>Your public IP is visible to websites.</p>
+        <p class="dim">ScriptGuard blocks browser IP leaks (WebRTC, blob workers, fingerprint requests), but it <b>cannot hide or spoof your public IP</b>. Only a VPN, Tor or a proxy can do that.</p>
+        <div class="ip-badges">
+          <span class="ip-badge warn" id="ipStatus">IP EXPOSED</span>
+          <span class="ip-badge rec" id="vpnBadge" hidden>VPN RECOMMENDED</span>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ===== report ===== -->
+  <details class="sec" id="secReport">
+    <summary>Report <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <p class="hint-line">Generate a plain-text report to copy &amp; paste anywhere. Nothing is sent automatically - no telemetry, ever.</p>
+      <div class="report-actions">
+        <button class="small primary" id="genReport">Generate report</button>
+        <button class="small" id="copyReport" disabled>Copy</button>
+      </div>
+      <pre class="report" id="reportOut" tabindex="0"></pre>
+    </div>
+  </details>
+
+  <!-- ===== developer & community ===== -->
+  <details class="sec" id="secComm">
+    <summary>Developer &amp; community <span class="chev">&#9654;</span></summary>
+    <div class="sec-body">
+      <a class="src-btn" href="https://github.com/TuffyCoder/ScriptGuard" target="_blank" rel="noopener noreferrer">&#9679; Source code - github.com/TuffyCoder/ScriptGuard</a>
+      <div class="comm">
+        <a href="https://github.com/TuffyCoder" target="_blank" rel="noopener noreferrer"><span class="ic">gh</span> GitHub</a>
+        <a href="https://www.youtube.com/@TuffyCoder" target="_blank" rel="noopener noreferrer"><span class="ic">yt</span> YouTube</a>
+        <a href="https://reddit.com/user/FrostByteCreator" target="_blank" rel="noopener noreferrer"><span class="ic">rd</span> Reddit</a>
+        <a href="https://tiktok.com/TuffyCoderdev" target="_blank" rel="noopener noreferrer"><span class="ic">tt</span> TikTok</a>
+      </div>
+      <p class="hint-line">GPLv3 licensed. 100% open source - audit every line, no telemetry, no accounts.</p>
+    </div>
+  </details>
+
+  <div class="foot">
+    <label class="trust">
+      <input type="checkbox" id="trustToggle">
+      <span>Trust this domain (never delete its scripts)</span>
+    </label>
+    <div class="foot-row">
+      <button class="small" id="resetSite">Forget this site</button>
+      <button class="small" id="exportBtn">Export rules</button>
+      <button class="small" id="importBtn">Import rules</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

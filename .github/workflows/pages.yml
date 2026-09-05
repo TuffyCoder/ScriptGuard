@@ -1,0 +1,32 @@
+# Deploy the scriptguard-website/ folder to GitHub Pages on every push to main
+name: Deploy scriptguard-website to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload scriptguard-website folder as Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: scriptguard-website
+
+  deploy-to-pages:
+    needs: build-and-upload
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1

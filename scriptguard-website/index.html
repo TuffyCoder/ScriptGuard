@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ScriptGuard – Open-Source Firefox Privacy Extension | Script Blocker, Anti-Tracking &amp; Fingerprint Protection 2026</title>
+  <meta name="description" content="ScriptGuard deletes tracking &amp; ad scripts BEFORE they execute, blocks WebRTC IP leaks, canvas/WebGL/audio fingerprinting and ads. Free, open-source Firefox privacy extension — install in one click.">
+  <meta name="keywords" content="privacy extension, script blocker, anti-tracking tool, fingerprint protection, WebRTC leak blocker, browser security extension, open-source privacy tools, 2026 privacy extension, anti-surveillance browser addon, script deletion tool, network-layer ad blocker, fingerprint request remover, Firefox privacy add-on, canvas fingerprint defender, anti-fingerprinting">
+  <meta name="author" content="TuffyCoder">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0d0f12">
+  <link rel="canonical" href="https://tuffycoder.github.io/ScriptGuard/">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ScriptGuard">
+  <meta property="og:title" content="ScriptGuard – Open-Source Firefox Privacy Extension (2026)">
+  <meta property="og:description" content="Deletes tracking scripts before they execute. Blocks ads, WebRTC leaks and fingerprinting. Free, open source, zero telemetry.">
+  <meta property="og:url" content="https://tuffycoder.github.io/ScriptGuard/">
+  <meta property="og:image" content="https://tuffycoder.github.io/ScriptGuard/avatar.png">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ScriptGuard – Open-Source Firefox Privacy Extension (2026)">
+  <meta name="twitter:description" content="Deletes tracking scripts before they execute. Blocks ads, WebRTC leaks and fingerprinting. Free, open source, zero telemetry.">
+  <meta name="twitter:image" content="https://tuffycoder.github.io/ScriptGuard/avatar.png">
+
+  <!-- JSON-LD: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ScriptGuard",
+    "alternateName": "ScriptGuard Privacy Shield",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Firefox 91+",
+    "softwareVersion": "1.1.0",
+    "datePublished": "2025-09-05",
+    "dateModified": "2026-09-05",
+    "url": "https://tuffycoder.github.io/ScriptGuard/",
+    "downloadUrl": "https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/",
+    "license": "https://www.gnu.org/licenses/gpl-3.0",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Open-source Firefox privacy extension that deletes tracking and ad scripts before they execute, blocks WebRTC and Blob IP leaks, removes fingerprint requests, and adds a network-layer ad & tracker firewall. Zero telemetry.",
+    "author": {
+      "@type": "Person",
+      "name": "TuffyCoder",
+      "url": "https://github.com/TuffyCoder",
+      "sameAs": [
+        "https://github.com/TuffyCoder",
+        "https://www.youtube.com/@TuffyCoder",
+        "https://reddit.com/u/TuffyCoder",
+        "https://tiktok.com/@TuffyCoderdev"
+      ]
+    },
+    "featureList": [
+      "Deletes scripts before execution",
+      "Ad & tracker firewall at the network layer",
+      "WebRTC kill-switch",
+      "Blob URL kill-switch",
+      "Canvas, WebGL and audio fingerprint protection",
+      "Tracking-URL stripping (utm_*, fbclid, gclid)",
+      "Global Privacy Control (GPC + DNT)",
+      "Import / export rules as JSON",
+      "Zero telemetry"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ScriptGuard",
+    "url": "https://tuffycoder.github.io/ScriptGuard/",
+    "publisher": {
+      "@type": "Person",
+      "name": "TuffyCoder",
+      "url": "https://github.com/TuffyCoder"
+    },
+    "inLanguage": "en"
+  }
+  </script>
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "ScriptGuard", "item": "https://tuffycoder.github.io/ScriptGuard/" },
+      { "@type": "ListItem", "position": 2, "name": "Features", "item": "https://tuffycoder.github.io/ScriptGuard/#features" },
+      { "@type": "ListItem", "position": 3, "name": "FAQ", "item": "https://tuffycoder.github.io/ScriptGuard/#faq" }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Person (EEAT) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "TuffyCoder",
+    "url": "https://github.com/TuffyCoder",
+    "image": "https://tuffycoder.github.io/ScriptGuard/avatar.png",
+    "jobTitle": "Open-source privacy developer",
+    "sameAs": [
+      "https://github.com/TuffyCoder",
+      "https://www.youtube.com/@TuffyCoder",
+      "https://reddit.com/u/TuffyCoder",
+      "https://tiktok.com/@TuffyCoderdev"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage (mirrors the visible FAQ) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is ScriptGuard?",
+        "acceptedAnswer": { "@type": "Answer", "text": "ScriptGuard is a free, open-source Firefox privacy extension that deletes tracking and advertising scripts BEFORE they execute, blocks WebRTC and Blob IP leaks, removes fingerprint requests (canvas, WebGL, audio), and adds a network-layer ad & tracker firewall. It works in four modes: OFF, BASIC, PRO and MAXIMUM." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is ScriptGuard free and open source?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. ScriptGuard is 100% free and GPLv3 licensed. Every line of code is public on GitHub, there are no accounts, no premium tiers and zero telemetry. You can audit the source or build it yourself." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does ScriptGuard block ads?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. ScriptGuard includes an ad & tracker firewall that cancels requests to known advertising and tracking domains before anything is downloaded, in every active mode (BASIC, PRO and MAXIMUM). It also removes ad iframes and images from the page so empty ad boxes collapse." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is ScriptGuard different from uBlock Origin or NoScript?",
+        "acceptedAnswer": { "@type": "Answer", "text": "uBlock Origin filters requests with filter lists; NoScript toggles script permissions. ScriptGuard goes further: it deletes scripts from the DOM before execution, spoofs canvas/WebGL/audio fingerprinting with session-stable noise, kills WebRTC IP leaks, strips tracking URLs like utm_* and fbclid, and sends Global Privacy Control signals. It is designed to stack alongside an ad blocker, not replace it." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does ScriptGuard hide my IP address?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No — and no browser extension can. ScriptGuard blocks browser-level IP leaks (WebRTC/STUN/ICE, blob workers, fingerprint-based inference), but hiding your public IP requires a VPN or Tor. ScriptGuard is fully compatible with both." }
+      },
+      {
+        "@type": "Question",
+        "name": "Will ScriptGuard break websites?",
+        "acceptedAnswer": { "@type": "Answer", "text": "In BASIC and PRO modes, sites stay usable: PRO deletes third-party scripts and ads while first-party content keeps working, and whitelists let you allow anything. MAXIMUM mode is intentionally nuclear — it deletes every script and will break most sites by design. You choose the trade-off per site." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I install ScriptGuard on Firefox?",
+        "acceptedAnswer": { "@type": "Answer", "text": "One click: open ScriptGuard on addons.mozilla.org and click Add to Firefox. Developers can also clone the GitHub repository and load it via about:debugging > This Firefox > Load Temporary Add-on." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does ScriptGuard collect any of my data?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. ScriptGuard has zero telemetry, makes zero background requests and stores all rules locally in your browser. It also sends Global Privacy Control (GPC) and DNT signals telling websites not to sell or share your data." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is canvas, WebGL and audio fingerprinting?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Fingerprinting is a tracking technique where scripts read tiny hardware-specific differences (canvas rendering, WebGL renderer strings, audio processing) to build a unique ID for your device — no cookies needed. ScriptGuard spoofs these readings with session-stable noise in PRO mode and deletes them entirely in MAXIMUM mode, so your device cannot be re-identified across sessions." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I allow specific scripts on one site only?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. ScriptGuard has a per-site whitelist, a global whitelist, user regex rules and heuristic learning rules — all exportable and importable as JSON, so you can back up or share your rule set." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does ScriptGuard work in the US, UK, EU and other regions?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. ScriptGuard works worldwide on any Firefox browser. Its Global Privacy Control signal is recognized under US state privacy laws like CCPA/CPRA in the United States, and supports GDPR-conscious browsing in the EU and UK. All features work regardless of region — no geo-restrictions." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAV ================= -->
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="ScriptGuard home">
+        <img src="logo.png" alt="ScriptGuard logo" width="34" height="34" class="brand-logo">
+        <span>ScriptGuard</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#modes">Modes</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#compare">Compare</a>
+        <a href="#faq">FAQ</a>
+        <a href="#author">Author</a>
+        <a class="btn btn-primary btn-nav" href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">Install free</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Open-source · GPLv3 licensed · Zero telemetry · Firefox</p>
+        <h1>ScriptGuard — The Open-Source Firefox Privacy Shield That Deletes Trackers Before They Execute</h1>
+        <p class="lede">
+          ScriptGuard is a free <strong>privacy extension for Firefox</strong> that works as a
+          <strong>script blocker</strong>, <strong>anti-tracking tool</strong> and <strong>network-layer ad blocker</strong>
+          in one lightweight add-on. It deletes tracking scripts <em>before they run</em>, kills WebRTC IP leaks,
+          deletes fingerprint requests, and strips tracking URLs — while keeping websites usable.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">🦊 Add to Firefox — Free</a>
+          <a class="btn btn-ghost btn-lg" href="https://github.com/TuffyCoder/ScriptGuard" target="_blank" rel="noopener noreferrer">★ View source on GitHub</a>
+        </div>
+        <ul class="trust-strip" aria-label="Trust signals">
+          <li>✓ 100% open source (GPLv3)</li>
+          <li>✓ Zero telemetry, zero accounts</li>
+          <li>✓ Works offline after install</li>
+          <li>✓ v1.1.0 — updated 2026</li>
+        </ul>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="shield-card">
+          <img src="logo.png" alt="" width="170" height="170" class="hero-shield">
+          <p class="shield-caption">deleted <b id="demoCount">1,024</b> trackers this week*</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LONG-TAIL KEYWORD CLUSTERS ================= -->
+  <section class="section section-alt" aria-labelledby="ltl-h">
+    <div class="container">
+      <h2 id="ltl-h" class="h2">What ScriptGuard Protects You From — Search-Ready Answers</h2>
+      <p class="muted">Every cluster below is a real problem ScriptGuard solves. Click a mode to see how.</p>
+      <div class="chip-groups">
+        <div class="chip-group">
+          <h3 class="chip-title">Script &amp; tracker control</h3>
+          <div class="chips">
+            <span class="chip">firefox extension that blocks scripts before they load</span>
+            <span class="chip">delete third-party tracking scripts automatically</span>
+            <span class="chip">script blocker for firefox 2026</span>
+            <span class="chip">stop cross-site tracking at the source</span>
+            <span class="chip">learn &amp; remember malicious scripts per site</span>
+          </div>
+        </div>
+        <div class="chip-group">
+          <h3 class="chip-title">Fingerprint protection</h3>
+          <div class="chips">
+            <span class="chip">canvas fingerprint remover extension</span>
+            <span class="chip">webgl renderer spoofing addon</span>
+            <span class="chip">audio fingerprint noise tool</span>
+            <span class="chip">anti-fingerprinting browser extension free</span>
+            <span class="chip">hardware entropy protection</span>
+          </div>
+        </div>
+        <div class="chip-group">
+          <h3 class="chip-title">IP-leak &amp; network defense</h3>
+          <div class="chips">
+            <span class="chip">webrtc leak blocker for firefox</span>
+            <span class="chip">prevent STUN/ICE IP leaks</span>
+            <span class="chip">network-layer ad blocker addon</span>
+            <span class="chip">block sendBeacon telemetry</span>
+            <span class="chip">strip utm &amp; fbclid from links</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GEO CLUSTERS ================= -->
+  <section class="section" aria-labelledby="geo-h">
+    <div class="container">
+      <h2 id="geo-h" class="h2">A Global Privacy Shield, Wherever You Browse</h2>
+      <p class="muted">ScriptGuard works on any Firefox — desktop or laptop — in every country. Popular searches by region:</p>
+      <div class="chips chips-geo">
+        <span class="chip chip-geo">best privacy extension firefox USA</span>
+        <span class="chip chip-geo">anti-tracking add-on UK</span>
+        <span class="chip chip-geo">GDPR-friendly privacy tool Germany &amp; EU</span>
+        <span class="chip chip-geo"> CCPA opt-out privacy extension California</span>
+        <span class="chip chip-geo">script blocker Canada</span>
+        <span class="chip chip-geo">anti-surveillance addon Australia</span>
+        <span class="chip chip-geo">Datenschutz Firefox-Erweiterung</span>
+        <span class="chip chip-geo">protection vie privée Firefox France</span>
+        <span class="chip chip-geo">privacy extension India</span>
+        <span class="chip chip-geo">LGPD-aware privacy tool Brazil</span>
+        <span class="chip chip-geo">fingerprint protection worldwide</span>
+      </div>
+      <p class="muted small">GEO note: the built-in <strong>Global Privacy Control (GPC)</strong> signal is recognized under CCPA/CPRA (California), Colorado, Connecticut and other US state laws, and supports GDPR/UK-GDPR conscious browsing — it tells every site you visit: <em>“Do not sell or share my personal information.”</em></p>
+    </div>
+  </section>
+
+  <!-- ================= MODES (interactive) ================= -->
+  <section class="section section-alt" id="modes" aria-labelledby="modes-h">
+    <div class="container">
+      <h2 id="modes-h" class="h2">Four Privacy Modes — From Invisible to Nuclear</h2>
+      <p class="muted">You decide the trade-off between privacy and usability. Try it:</p>
+
+      <div class="mode-demo">
+        <div class="mode-buttons" role="tablist" aria-label="Privacy modes">
+          <button class="mode-btn" data-mode="OFF" role="tab">OFF</button>
+          <button class="mode-btn is-active" data-mode="BASIC" role="tab">BASIC</button>
+          <button class="mode-btn" data-mode="PRO" role="tab">PRO</button>
+          <button class="mode-btn" data-mode="MAXIMUM" role="tab">MAXIMUM</button>
+        </div>
+        <div class="mode-panel">
+          <img src="mode-basic.png" alt="" width="110" height="110" id="modeIcon" class="mode-icon">
+          <div class="mode-info">
+            <h3 class="mode-name" id="modeName">BASIC — light &amp; safe</h3>
+            <p id="modeDesc">Remembered rules + your regex rules — plus the ad &amp; tracker firewall and tracking-URL stripping in every mode.</p>
+            <ul class="mode-list" id="modeList">
+              <li>✓ Blocks ad &amp; tracker requests on every site</li>
+              <li>✓ Strips utm_*, fbclid, gclid from links</li>
+              <li>✓ Sends GPC “do not sell” signal</li>
+              <li>• Scripts: only ones you deleted before</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-inline">
+        <a class="btn btn-primary" href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">Get ScriptGuard free →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="section" id="features" aria-labelledby="features-h">
+    <div class="container">
+      <h2 id="features-h" class="h2">Complete Feature List — Every Shield Explained</h2>
+
+      <h3 class="h3">🧨 Script deletion — the core engine</h3>
+      <p>ScriptGuard hooks Firefox at <code>document_start</code> and deletes tracking and advertising scripts
+      <strong>before a single line executes</strong>. A backup sweep catches dynamically injected scripts, and the
+      heuristic engine learns suspicious scripts per site (WebRTC probing, fingerprinting, beacons, cookie access).</p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <h3>🛡️ Privacy shields</h3>
+          <ul>
+            <li>WebRTC kill-switch — RTCPeerConnection dies, STUN/ICE leaks impossible</li>
+            <li>Blob URL kill-switch — no blob: script or worker injection</li>
+            <li>Fingerprint request deletion — before the request happens</li>
+            <li>Third-party script blocking in PRO</li>
+            <li>Heuristic tracking detection with learning rules</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>🎨 Anti-fingerprinting</h3>
+          <ul>
+            <li>Canvas fingerprint — session-stable noise, readbacks stay consistent</li>
+            <li>WebGL fingerprint — renderer/vendor spoofed, debug extension nulled</li>
+            <li>Audio fingerprint — per-session noise on AudioBuffers</li>
+            <li>Hardware entropy — CPU cores, RAM, battery, voices normalized</li>
+            <li>Device enumeration — empty media device list</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>🌐 IP leak protection</h3>
+          <ul>
+            <li>Blocks WebRTC local/public IP leaks</li>
+            <li>Blocks STUN/ICE candidate gathering</li>
+            <li>Blocks blob-worker leaks</li>
+            <li>Blocks fingerprint-based IP inference</li>
+          </ul>
+          <p class="small muted">Honest limit: no extension can hide your public IP — pair ScriptGuard with a VPN or Tor for that.</p>
+        </article>
+        <article class="feature-card">
+          <h3>📢 Ad &amp; tracker firewall</h3>
+          <ul>
+            <li>Blocks 120+ ad/tracker networks before download</li>
+            <li>Active in BASIC, PRO and MAXIMUM</li>
+            <li>Removes ad iframes/images from the DOM</li>
+            <li>Strips utm_*, fbclid, gclid, twclid… from URLs</li>
+            <li>Sends Sec-GPC + DNT on every request</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>📜 Whitelisting system</h3>
+          <ul>
+            <li>Per-site whitelist — allow scripts on one domain</li>
+            <li>Global whitelist — allow everywhere</li>
+            <li>Regex rules — power-user block/allow patterns</li>
+            <li>Heuristic learning rules — auditable</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>📤 Import / export &amp; reports</h3>
+          <ul>
+            <li>Export all rules as JSON backup</li>
+            <li>Import &amp; merge — union, never overwrite</li>
+            <li>Full privacy report — copy/paste manually</li>
+            <li>No automatic sending, ever</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROBLEM → SOLUTION → BENEFIT ================= -->
+  <section class="section section-alt" id="benefits" aria-labelledby="benefits-h">
+    <div class="container">
+      <h2 id="benefits-h" class="h2">Why Thousands of Privacy-Conscious Users Choose ScriptGuard</h2>
+      <div class="psb-grid">
+        <article class="psb">
+          <p class="psb-problem"><strong>Problem:</strong> trackers load and fingerprint your device the instant a page opens — ad blockers arrive too late.</p>
+          <p class="psb-solution"><strong>Solution:</strong> ScriptGuard deletes the scripts <em>before execution</em> and blocks fingerprint requests.</p>
+          <p class="psb-benefit"><strong>Benefit:</strong> you are untracked from the first millisecond, not after the fact.</p>
+        </article>
+        <article class="psb">
+          <p class="psb-problem"><strong>Problem:</strong> WebRTC quietly leaks your real IP even behind a VPN.</p>
+          <p class="psb-solution"><strong>Solution:</strong> the WebRTC kill-switch makes RTCPeerConnection throw — no STUN/ICE escape.</p>
+          <p class="psb-benefit"><strong>Benefit:</strong> your VPN’s anonymity holds, and paired with Tor your circuit stays intact.</p>
+        </article>
+        <article class="psb">
+          <p class="psb-problem"><strong>Problem:</strong> heavy blockers break half the web and you disable them constantly.</p>
+          <p class="psb-solution"><strong>Solution:</strong> PRO mode deletes only third-party junk; whitelists rescue anything in one click.</p>
+          <p class="psb-benefit"><strong>Benefit:</strong> strong privacy that you never need to switch off.</p>
+        </article>
+        <article class="psb">
+          <p class="psb-problem"><strong>Problem:</strong> “private” extensions secretly phone home.</p>
+          <p class="psb-solution"><strong>Solution:</strong> ScriptGuard makes zero background requests — auditable GPLv3 code proves it.</p>
+          <p class="psb-benefit"><strong>Benefit:</strong> the privacy tool itself can never become the leak.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMPARISON ================= -->
+  <section class="section" id="compare" aria-labelledby="compare-h">
+    <div class="container">
+      <h2 id="compare-h" class="h2">ScriptGuard vs uBlock Origin vs NoScript vs Privacy Badger</h2>
+      <p class="muted">An honest comparison — ScriptGuard is designed to <em>stack</em> with your ad blocker, not replace it.</p>
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr><th scope="col">Capability</th><th scope="col">ScriptGuard</th><th scope="col">uBlock Origin</th><th scope="col">NoScript</th><th scope="col">Privacy Badger</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Deletes scripts before execution</td><td class="yes">✓ core engine</td><td class="part">filter-based</td><td class="yes">✓ (permission gates)</td><td class="no">✗</td></tr>
+            <tr><td>Network-layer ad blocker</td><td class="yes">✓ built-in</td><td class="yes">✓ filter lists</td><td class="no">✗</td><td class="part">tracker-only</td></tr>
+            <tr><td>Canvas / WebGL / audio fingerprint spoofing</td><td class="yes">✓ session-stable</td><td class="part">partial</td><td class="no">✗</td><td class="part">partial</td></tr>
+            <tr><td>WebRTC local-IP leak prevention</td><td class="yes">✓ kill-switch</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+            <tr><td>Tracking-URL stripping (utm_*, fbclid…)</td><td class="yes">✓ built-in</td><td class="part">filter-dependent</td><td class="no">✗</td><td class="no">✗</td></tr>
+            <tr><td>Global Privacy Control signal</td><td class="yes">✓ headers + JS</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td></tr>
+            <tr><td>Escalation modes incl. nuclear</td><td class="yes">✓ 4 modes</td><td class="no">✗</td><td class="part">levels</td><td class="no">✗</td></tr>
+            <tr><td>Heuristic per-site learning</td><td class="yes">✓ auditable</td><td class="part">community lists</td><td class="no">✗</td><td class="yes">✓</td></tr>
+            <tr><td>Zero telemetry</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>License</td><td>GPLv3</td><td>GPLv3</td><td>GPLv2</td><td>AGPLv3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ (People Also Ask) ================= -->
+  <section class="section section-alt" id="faq" aria-labelledby="faq-h">
+    <div class="container container-narrow">
+      <h2 id="faq-h" class="h2">Frequently Asked Questions (People Also Ask)</h2>
+
+      <details class="faq" open>
+        <summary>What is ScriptGuard?</summary>
+        <p>ScriptGuard is a free, open-source Firefox privacy extension that deletes tracking and advertising scripts <strong>before they execute</strong>, blocks WebRTC and Blob IP leaks, removes fingerprint requests (canvas, WebGL, audio), and adds a network-layer ad &amp; tracker firewall. It works in four modes: OFF, BASIC, PRO and MAXIMUM.</p>
+      </details>
+      <details class="faq">
+        <summary>Is ScriptGuard free and open source?</summary>
+        <p>Yes. ScriptGuard is 100% free and GPLv3 licensed. Every line of code is public on GitHub, there are no accounts, no premium tiers and zero telemetry. You can audit the source or build it yourself.</p>
+      </details>
+      <details class="faq">
+        <summary>Does ScriptGuard block ads?</summary>
+        <p>Yes. The ad &amp; tracker firewall cancels requests to known advertising and tracking domains <em>before anything is downloaded</em>, in every active mode (BASIC, PRO and MAXIMUM). It also removes ad iframes and images from the page so empty ad boxes collapse.</p>
+      </details>
+      <details class="faq">
+        <summary>How is ScriptGuard different from uBlock Origin or NoScript?</summary>
+        <p>uBlock Origin filters requests with filter lists; NoScript toggles script permissions. ScriptGuard goes further: it deletes scripts from the DOM before execution, spoofs canvas/WebGL/audio fingerprinting with session-stable noise, kills WebRTC IP leaks, strips tracking URLs like <code>utm_*</code> and <code>fbclid</code>, and sends Global Privacy Control signals. It is designed to stack alongside an ad blocker, not replace it.</p>
+      </details>
+      <details class="faq">
+        <summary>Does ScriptGuard hide my IP address?</summary>
+        <p>No — and no browser extension can. ScriptGuard blocks browser-level IP leaks (WebRTC/STUN/ICE, blob workers, fingerprint-based inference), but hiding your public IP requires a <strong>VPN or Tor</strong>. ScriptGuard is fully compatible with both.</p>
+      </details>
+      <details class="faq">
+        <summary>Will ScriptGuard break websites?</summary>
+        <p>In BASIC and PRO modes, sites stay usable: PRO deletes third-party scripts and ads while first-party content keeps working, and whitelists rescue anything in one click. MAXIMUM mode is intentionally nuclear — it deletes every script and will break most sites by design. You choose the trade-off per site.</p>
+      </details>
+      <details class="faq">
+        <summary>How do I install ScriptGuard on Firefox?</summary>
+        <p>One click: open <a href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">ScriptGuard on addons.mozilla.org</a> and click <em>Add to Firefox</em>. Developers can also clone the <a href="https://github.com/TuffyCoder/ScriptGuard" target="_blank" rel="noopener noreferrer">GitHub repository</a> and load it via <code>about:debugging</code> → <em>This Firefox</em> → <em>Load Temporary Add-on</em>.</p>
+      </details>
+      <details class="faq">
+        <summary>Does ScriptGuard collect any of my data?</summary>
+        <p>No. ScriptGuard has zero telemetry, makes zero background requests and stores all rules locally in your browser. It also sends Global Privacy Control (GPC) and DNT signals telling websites not to sell or share your data.</p>
+      </details>
+      <details class="faq">
+        <summary>What is canvas, WebGL and audio fingerprinting?</summary>
+        <p>Fingerprinting is a tracking technique where scripts read tiny hardware-specific differences (canvas rendering, WebGL renderer strings, audio processing) to build a unique ID for your device — no cookies needed. ScriptGuard spoofs these readings with session-stable noise in PRO mode and deletes them entirely in MAXIMUM mode, so your device cannot be re-identified across sessions.</p>
+      </details>
+      <details class="faq">
+        <summary>Can I allow specific scripts on one site only?</summary>
+        <p>Yes. ScriptGuard has a per-site whitelist, a global whitelist, user regex rules and heuristic learning rules — all exportable and importable as JSON, so you can back up or share your rule set.</p>
+      </details>
+      <details class="faq">
+        <summary>Does ScriptGuard work in the US, UK, EU and other regions?</summary>
+        <p>Yes. ScriptGuard works worldwide on any Firefox browser. Its Global Privacy Control signal is recognized under US state privacy laws like CCPA/CPRA in the United States, and supports GDPR-conscious browsing in the EU and UK. All features work regardless of region — no geo-restrictions.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= LSI CLOUD ================= -->
+  <section class="section" aria-labelledby="lsi-h">
+    <div class="container">
+      <h2 id="lsi-h" class="h2">Related Searches &amp; LSI Keywords</h2>
+      <div class="chips chips-lsi">
+        <span class="chip">script blocker</span>
+        <span class="chip">anti-tracking tool</span>
+        <span class="chip">fingerprint protection</span>
+        <span class="chip">WebRTC leak blocker</span>
+        <span class="chip">browser security extension</span>
+        <span class="chip">open-source privacy tools</span>
+        <span class="chip">anti-surveillance browser addon</span>
+        <span class="chip">script deletion tool</span>
+        <span class="chip">network-layer ad blocker</span>
+        <span class="chip">fingerprint request remover</span>
+        <span class="chip">canvas fingerprint defender</span>
+        <span class="chip">tracking protection firefox</span>
+        <span class="chip">privacy shield addon</span>
+        <span class="chip">zero telemetry extension</span>
+        <span class="chip">global privacy control browser</span>
+        <span class="chip">hardened browsing setup</span>
+        <span class="chip">firefox hardened privacy 2026</span>
+        <span class="chip">stop device fingerprinting</span>
+        <span class="chip">best firefox privacy extensions 2026</span>
+        <span class="chip">surveillance countermeasures</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EEAT / AUTHOR ================= -->
+  <section class="section section-alt" id="author" aria-labelledby="author-h">
+    <div class="container">
+      <h2 id="author-h" class="h2">Built by a Real Developer — Fully Auditable</h2>
+      <div class="author-card">
+        <img src="avatar.png" alt="TuffyCoder profile picture" width="96" height="96" class="author-avatar" loading="lazy">
+        <div>
+          <h3>TuffyCoder — open-source privacy developer</h3>
+          <p>ScriptGuard is maintained by TuffyCoder and shared across a public community on YouTube, Reddit, TikTok and GitHub. No company, no data broker, no hidden funding — just readable code anyone can verify line by line.</p>
+          <div class="socials">
+            <a class="social" href="https://github.com/TuffyCoder" target="_blank" rel="noopener noreferrer" aria-label="TuffyCoder on GitHub">
+              <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+              GitHub
+            </a>
+            <a class="social" href="https://www.youtube.com/@TuffyCoder" target="_blank" rel="noopener noreferrer" aria-label="TuffyCoder on YouTube">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg>
+              YouTube
+            </a>
+            <a class="social" href="https://reddit.com/u/TuffyCoder" target="_blank" rel="noopener noreferrer" aria-label="TuffyCoder on Reddit">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M24 12a2.4 2.4 0 0 0-4.06-1.73 11.77 11.77 0 0 0-6.4-2.04l1.09-3.43 2.96.7a1.71 1.71 0 1 0 .17-.84l-3.3-.79a.43.43 0 0 0-.52.3l-1.21 3.86a11.8 11.8 0 0 0-6.5 2.05A2.4 2.4 0 1 0 3.4 13.6a4.7 4.7 0 0 0-.06.73c0 3.7 3.88 6.7 8.66 6.7s8.66-3 8.66-6.7a4.7 4.7 0 0 0-.06-.73A2.4 2.4 0 0 0 24 12ZM6 13.7a1.7 1.7 0 1 1 1.7 1.7A1.7 1.7 0 0 1 6 13.7Zm9.44 4.38a5.53 5.53 0 0 1-3.44 1.07 5.53 5.53 0 0 1-3.44-1.07.43.43 0 0 1 .6-.61 4.69 4.69 0 0 0 2.84.83 4.69 4.69 0 0 0 2.84-.83.43.43 0 1 1 .6.61Zm-.14-2.68a1.7 1.7 0 1 1 1.7-1.7 1.7 1.7 0 0 1-1.7 1.7Z"/></svg>
+              Reddit
+            </a>
+            <a class="social" href="https://tiktok.com/@TuffyCoderdev" target="_blank" rel="noopener noreferrer" aria-label="TuffyCoder on TikTok">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M19.6 6.7a5.6 5.6 0 0 1-3.3-3.5 5.4 5.4 0 0 1-.2-1.2h-3.5v13.7a2.9 2.9 0 1 1-2.9-2.9 3 3 0 0 1 .9.1V9.3a6.4 6.4 0 1 0 5.5 6.3V8.9a9 9 0 0 0 4.5 1.3V6.8c-.3 0-.7 0-1-.1Z"/></svg>
+              TikTok
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="eeat-grid">
+        <div class="eeat-item"><span class="eeat-icon">⚖️</span><b>GPLv3 License</b><span>Free to use, modify, distribute — stay open</span></div>
+        <div class="eeat-item"><span class="eeat-icon">🔍</span><b>Auditable</b><span>No frameworks, no minified blobs — plain readable JS</span></div>
+        <div class="eeat-item"><span class="eeat-icon">📡</span><b>Zero telemetry</b><span>Zero background requests — ever</span></div>
+        <div class="eeat-item"><span class="eeat-icon">🧾</span><b>Transparent limits</b><span>Documented honestly, including IP masking limits</span></div>
+        <div class="eeat-item"><span class="eeat-icon">🔄</span><b>Actively maintained</b><span>v1.1.0 — updated September 2026</span></div>
+        <div class="eeat-item"><span class="eeat-icon">🤝</span><b>Community-driven</b><span>PRs welcome; every feature must stay optional</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOLLOW THE JOURNEY ================= -->
+  <section class="section section-alt" id="follow" aria-labelledby="follow-h">
+    <div class="container follow-inner">
+      <h2 id="follow-h" class="h2">Follow the Journey</h2>
+      <p class="muted">ScriptGuard is built in the open — releases, upcoming features, privacy tips and behind-the-scenes land on social first. Pick your platform and come along:</p>
+      <div class="follow-grid">
+        <a class="follow-card" href="https://www.youtube.com/@TuffyCoder" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg>
+          <b>YouTube</b><span>@TuffyCoder — demos &amp; releases</span>
+        </a>
+        <a class="follow-card" href="https://reddit.com/u/TuffyCoder" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M24 12a2.4 2.4 0 0 0-4.06-1.73 11.77 11.77 0 0 0-6.4-2.04l1.09-3.43 2.96.7a1.71 1.71 0 1 0 .17-.84l-3.3-.79a.43.43 0 0 0-.52.3l-1.21 3.86a11.8 11.8 0 0 0-6.5 2.05A2.4 2.4 0 1 0 3.4 13.6a4.7 4.7 0 0 0-.06.73c0 3.7 3.88 6.7 8.66 6.7s8.66-3 8.66-6.7a4.7 4.7 0 0 0-.06-.73A2.4 2.4 0 0 0 24 12ZM6 13.7a1.7 1.7 0 1 1 1.7 1.7A1.7 1.7 0 0 1 6 13.7Zm9.44 4.38a5.53 5.53 0 0 1-3.44 1.07 5.53 5.53 0 0 1-3.44-1.07.43.43 0 0 1 .6-.61 4.69 4.69 0 0 0 2.84.83 4.69 4.69 0 0 0 2.84-.83.43.43 0 1 1 .6.61Zm-.14-2.68a1.7 1.7 0 1 1 1.7-1.7 1.7 1.7 0 0 1-1.7 1.7Z"/></svg>
+          <b>Reddit</b><span>u/TuffyCoder — feedback &amp; reviews</span>
+        </a>
+        <a class="follow-card" href="https://tiktok.com/@TuffyCoderdev" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M19.6 6.7a5.6 5.6 0 0 1-3.3-3.5 5.4 5.4 0 0 1-.2-1.2h-3.5v13.7a2.9 2.9 0 1 1-2.9-2.9 3 3 0 0 1 .9.1V9.3a6.4 6.4 0 1 0 5.5 6.3V8.9a9 9 0 0 0 4.5 1.3V6.8c-.3 0-.7 0-1-.1Z"/></svg>
+          <b>TikTok</b><span>@TuffyCoderdev — quick privacy tips</span>
+        </a>
+        <a class="follow-card" href="https://github.com/TuffyCoder" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 16 16" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          <b>GitHub</b><span>TuffyCoder — code &amp; issues</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section class="cta-section" aria-labelledby="cta-h">
+    <div class="container container-narrow cta-inner">
+      <h2 id="cta-h">Take Back Control of Your Browser in One Click</h2>
+      <p>Install ScriptGuard free, browse in BASIC, flip to PRO when you want real privacy, and keep MAXIMUM in your back pocket for the sites you do not trust an inch.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary btn-lg" href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">🦊 Install ScriptGuard from Mozilla Add-ons</a>
+        <a class="btn btn-ghost btn-lg" href="https://tuffycoder.github.io/ScriptGuard/" rel="noopener">Official project page</a>
+      </div>
+      <p class="small muted cta-review">Already using ScriptGuard? <a href="https://reddit.com/u/TuffyCoder" target="_blank" rel="noopener noreferrer"><strong>Leave your review or feedback on Reddit</strong></a> — every message is read and shapes the next release.</p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>ScriptGuard</h3>
+        <p class="small muted">Open-source privacy shield &amp; script control for Firefox. Delete trackers before they execute.</p>
+        <a class="btn btn-primary btn-sm" href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">Add to Firefox</a>
+      </div>
+      <div>
+        <h3>Project</h3>
+        <a href="https://addons.mozilla.org/en-GB/firefox/addon/scriptguard/" target="_blank" rel="noopener noreferrer">Firefox Add-ons store</a>
+        <a href="https://github.com/TuffyCoder/ScriptGuard" target="_blank" rel="noopener noreferrer">Source code (GitHub)</a>
+        <a href="https://github.com/TuffyCoder/ScriptGuard/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <h3>Community</h3>
+        <a href="https://reddit.com/u/TuffyCoder" target="_blank" rel="noopener noreferrer">💬 Leave a review on Reddit</a>
+        <a href="https://github.com/TuffyCoder" target="_blank" rel="noopener noreferrer">GitHub — TuffyCoder</a>
+        <a href="https://www.youtube.com/@TuffyCoder" target="_blank" rel="noopener noreferrer">YouTube — @TuffyCoder</a>
+        <a href="https://reddit.com/u/TuffyCoder" target="_blank" rel="noopener noreferrer">Reddit — u/TuffyCoder</a>
+        <a href="https://tiktok.com/@TuffyCoderdev" target="_blank" rel="noopener noreferrer">TikTok — @TuffyCoderdev</a>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <a href="https://github.com/TuffyCoder/ScriptGuard/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">GPLv3 License</a>
+        <p class="small muted">No cookies, no analytics, no tracking on this site. © <span id="year">2026</span> TuffyCoder.</p>
+      </div>
+    </div>
+    <p class="footer-note container small muted">*Illustrative counter. ScriptGuard cannot spoof or hide your public IP — use a VPN or Tor for that. Firefox is a trademark of the Mozilla Foundation; ScriptGuard is an independent open-source project.</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

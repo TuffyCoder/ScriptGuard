@@ -1,6 +1,6 @@
 # ScriptGuard
 
-ScriptGuard is an open‑source browser privacy extension designed to give users full control over scripts, fingerprinting, WebRTC leaks, Blob leaks, and third‑party tracking — all while keeping sites usable in PRO mode and fully locked down in MAXIMUM mode.
+ScriptGuard is an open‑source browser privacy extension designed to give users full control over scripts, fingerprinting, WebRTC leaks, Blob leaks, and third‑party tracking all while keeping sites usable in PRO mode and fully locked down in MAXIMUM mode.
 
 Built for maximum privacy, zero telemetry, and full transparency.
 ⚡ Features

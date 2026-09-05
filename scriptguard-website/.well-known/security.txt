@@ -1,0 +1,8 @@
+Contact: https://github.com/TuffyCoder/ScriptGuard/security/advisories
+Contact: mailto:security@scriptguard.dev
+Expires: 2027-09-05T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://tuffycoder.github.io/ScriptGuard/.well-known/security.txt
+Policy: https://github.com/TuffyCoder/ScriptGuard/security/policy
+Acknowledgments: https://github.com/TuffyCoder/ScriptGuard/discussions
+Hiring: https://github.com/TuffyCoder

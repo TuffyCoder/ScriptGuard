@@ -92,3 +92,55 @@ Firefox
     Click Load Temporary Add‑on
 
     Select manifest.json
+
+    Make changes, test in your browser, and submit pull requests.
+🤝 Contributing
+
+ScriptGuard is fully open‑source under the MIT License.
+Contribution Rules
+
+    No telemetry
+
+    No data collection
+
+    No external tracking libraries
+
+    All code must be readable
+
+    All features must be optional
+
+    MAXIMUM mode must remain nuclear
+
+    PRO mode must remain usable
+
+🌍 Community & Socials
+
+Follow the developer and join the community:
+
+    YouTube: youtube.com/@TuffyCoder
+
+    Reddit: reddit.com/u/FrostByteCreator
+
+    TikTok: tiktok.com/TuffyCoderdev
+
+    GitHub: github.com/TuffyCoder
+
+🔒 Security Philosophy
+
+ScriptGuard follows these principles:
+
+    User‑controlled privacy
+
+    Zero trust for third‑party scripts
+
+    Zero telemetry
+
+    Zero background requests
+
+    Full transparency
+
+    Open‑source code only
+
+📄 License
+
+MIT License — free to use, modify, and distribute.

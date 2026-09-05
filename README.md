@@ -119,7 +119,7 @@ Follow the developer and join the community:
 
     YouTube: youtube.com/@TuffyCoder
 
-    Reddit: reddit.com/u/FrostByteCreator
+    Reddit: reddit.com/u/TuffyCoder
 
     TikTok: tiktok.com/TuffyCoderdev
 

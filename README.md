@@ -14,7 +14,7 @@ Every feature below is implemented according to the ScriptGuard Master Prompt.
 
     PRO — Privacy‑focused but usable
 
-    MAXIMUM — Nuclear mode (delete everything)
+    MAXIMUM — Nuclear mode (powerful)
 
 🛡️ Privacy Shields
 
@@ -52,7 +52,8 @@ ScriptGuard blocks:
 
     Fingerprinting‑based IP inference
 
-ScriptGuard cannot spoof or hide your public IP — only VPN/Tor can. 
+ScriptGuard cannot spoof or hide your public IP — only VPN/Tor can.
+
 If you want to hide your public IP is recommend to use a VPN.
 
 📜 Whitelisting System
@@ -96,7 +97,8 @@ Firefox
     Make changes, test in your browser, and submit pull requests.
 🤝 Contributing
 
-ScriptGuard is fully open‑source under the MIT License.
+ScriptGuard is fully open‑source under the GPLv3 License.
+
 Contribution Rules
 
     No telemetry

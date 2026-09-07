@@ -13,6 +13,22 @@
 'use strict';
 
 /* ---------------------------------------------------------------------
+ * Platform tagging
+ *
+ * Tag <html> so CSS can switch to the Android bottom-sheet layout.
+ * `gecko_android` is a manifest concept, not a media query, so the
+ * platform must be detected at runtime via getPlatformInfo().
+ * ------------------------------------------------------------------- */
+
+try {
+  browser.runtime.getPlatformInfo().then((info) => {
+    if (info && info.os === 'android') {
+      document.documentElement.classList.add('platform-android');
+    }
+  }).catch(() => { /* desktop / unsupported — keep default px layout */ });
+} catch (e) { /* non-browser context or chrome.* only — ignore */ }
+
+/* ---------------------------------------------------------------------
  * Mode metadata shown in the selector
  * ------------------------------------------------------------------- */
 
@@ -41,14 +57,25 @@ const FIREWALL_DEFAULTS = {
 let currentTab = null;    // active tab (tabs.query)
 let pageDomain = '';      // hostname of the active tab
 let lastScripts = [];     // last script list from the content script
-let lastCounters = { fingerprint: 0, webrtc: 0, blob: 0, eval: 0, popup: 0, channel: 0, privacy: 0, ad: 0 };
+let lastCounters = { fingerprint: 0, webrtc: 0, blob: 0, eval: 0, popup: 0, channel: 0, privacy: 0, ad: 0, cosmetic: 0 };
 let lastReportText = '';
 
 /* ---------------------------------------------------------------------
  * Boot
  * ------------------------------------------------------------------- */
 
-init();
+init().catch(function (err) {
+  // Never leave the user staring at a dead popup - show what happened
+  // and how to recover. (This also keeps the UI alive on Fenix/Android
+  // when a tab cannot be reached.)
+  try {
+    var el = document.getElementById('emptyMsg');
+    el.hidden = false;
+    el.textContent = 'Popup loaded but could not reach this page. Reload the site and try again.';
+    var chip = document.getElementById('modeChip');
+    if (chip) chip.textContent = 'READY';
+  } catch (e) { /* last resort */ }
+});
 
 async function init() {
   try {
@@ -201,7 +228,8 @@ async function loadReport() {
     document.getElementById('privacyCount').textContent =
       String((res.report.counters.privacy || 0));
     document.getElementById('adCount').textContent =
-      String((res.report.counters.ad || 0) + (res.report.counters.popup || 0));
+      String((res.report.counters.ad || 0) + (res.report.counters.popup || 0) +
+             (res.report.counters.cosmetic || 0));
   }
   renderShields(res.report);
   renderSiteStat();
